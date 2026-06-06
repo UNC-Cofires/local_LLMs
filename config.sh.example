@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Location and name of conda environment to create
+LLM_CONDA_ENV_PATH="/proj/mylab/projects/myonyen/local_LLMs/llm-env-v1"
+LLM_CONDA_ENV_NAME="llm-env-v1"
+
+# Version of PyTorch to install.
+# Must be compatible with version of CUDA installed on Longleaf.
+#
+# To check the version of CUDA on Longleaf follow the steps on
+# the following page: https://help.rc.unc.edu/gpumonitor/
+#
+# To determine the correct download URL for PyTorch,
+# please see the following page: https://pytorch.org/
+PYTORCH_DOWNLOAD_URL="https://download.pytorch.org/whl/cu130"
+
+# Base directory for Hugging Face cache files.
+# I recommend making this a /proj folder to avoid exceeding home directory quota limit.
+# For convenience, I also recommend adding this environment variable to your .bashrc.
+HF_HOME="/proj/mylab/projects/myonyen/local_LLMs/.cache/huggingface"
+
+# Hugging Face user access token.
+# To create one, go to: https://huggingface.co/settings/tokens
+# Requires read access permissions to your Hugging Face account.
+HUGGING_FACE_HUB_TOKEN="my_hf_token"
+
+
