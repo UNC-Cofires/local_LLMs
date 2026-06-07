@@ -76,7 +76,7 @@ Setup only needs to be performed once. Steps 1 and 2 can be run on a general (CP
 Copy the example configuration file and edit it with your own settings:
 
 ```bash
-cp config.sh.example.txt config.sh
+cp config.sh.example config.sh
 ```
 
 Open `config.sh` and fill in the following variables:
@@ -144,7 +144,7 @@ Submit the job to the [l40-gpu](https://help.rc.unc.edu/gpu/) partition with:
 sbatch < run_example.sh
 ```
 
-Expected output (see `example-slurm.out.txt` for a full example):
+Expected output (see `example-slurm.out` for a full example):
 
 ```
 Loading model: meta-llama/Meta-Llama-3.1-8B-Instruct
