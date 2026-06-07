@@ -41,7 +41,7 @@ pip install transformers accelerate bitsandbytes huggingface_hub numpy pandas
 
 # Install other packages useful for scientific computing
 # (Feel free to add to this list)
-pip install scipy pyarrow matplotlib requests
+pip install scipy pyarrow matplotlib requests markdownify
 
 # Optional: Register kernel so you can access the environment from a Jupyter notebook session
 pip install ipykernel

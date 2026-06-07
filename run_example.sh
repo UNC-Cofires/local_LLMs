@@ -1,13 +1,15 @@
 #!/bin/bash
 
-#SBATCH -p general
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH --mem=8g
-#SBATCH -t 1-00:00:00
-#SBATCH --mail-type=all
-#SBATCH --job-name=download_models
+#SBATCH -t 0-01:00:00
+#SBATCH -p l40-gpu
+#SBATCH --qos=gpu_access
+#SBATCH --gres=gpu:1
+#SBATCH --job-name=local_llm_example
 #SBATCH --mail-user=kieranf@email.unc.edu
+#SBATCH --mail-type=all
 
 # Load configuration file
 source config.sh
@@ -19,14 +21,13 @@ module load anaconda
 # Activate environment
 conda activate $LLM_CONDA_ENV_PATH
 
-# Export environment variables that python will need to download models through Hugging Face
+# Export environment variables used within python script
 export HF_HOME=$HF_HOME
 export HUGGING_FACE_HUB_TOKEN=$HUGGING_FACE_HUB_TOKEN
+export PYTHONWARNINGS="ignore"
 
-# Download pre-trained models
-# (python script expects there to be a list of LLMs to download in a file named model_list.txt)
-python3.12 download_models.py
+# Run example python script that uses a local LLM to analyze news article text
+python3.12 run_example.py
 
 # Deactivate environment
 conda deactivate
-
