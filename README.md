@@ -10,8 +10,6 @@ as describing a flood or hurricane disaster event.
 ## Overview
 
 Running LLMs locally on Longleaf is useful when:
-- You are processing a large number of documents and need more compute power
-  than a personal machine can provide
 - You are working with sensitive data that should not be sent to an external
   API
 - You want to reduce research expenses associated with commercial API usage,
