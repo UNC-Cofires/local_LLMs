@@ -47,7 +47,7 @@ Some models require you to accept a license agreement on Hugging Face before
 downloading. Make sure you are logged in to Hugging Face and have accepted
 the license for each model you intend to use:
 - **Llama 3.1:** https://huggingface.co/meta-llama/Meta-Llama-3.1-8B-Instruct
-- **Gemma 2:** https://huggingface.co/google/gemma-2-9b-it
+- **Gemma 4:** https://huggingface.co/google/gemma-4-12B-it
 
 ---
 
