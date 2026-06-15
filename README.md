@@ -117,7 +117,8 @@ The models to download are listed in `model_list.txt`, one model ID per line:
 
 ```
 meta-llama/Meta-Llama-3.1-8B-Instruct
-google/gemma-2-9b-it
+google/gemma-4-12B-it
+Qwen/Qwen3.5-9B
 ```
 
 Edit this file to add or remove models as needed, then submit the download job:
