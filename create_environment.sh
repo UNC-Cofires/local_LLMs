@@ -37,7 +37,7 @@ conda activate $LLM_CONDA_ENV_PATH
 pip install torch --index-url $PYTORCH_DOWNLOAD_URL
 
 # Install LLM dependencies
-pip install transformers accelerate bitsandbytes huggingface_hub numpy pandas
+pip install transformers accelerate bitsandbytes huggingface_hub vllm numpy pandas
 
 # Install other packages useful for scientific computing
 # (Feel free to add to this list)
