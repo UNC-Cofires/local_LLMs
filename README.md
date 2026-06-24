@@ -97,6 +97,14 @@ Open `config.sh` and fill in the following variables:
 > falls between two available PyTorch options, choose the closest version that
 > is less than or equal to your installed CUDA version.
 
+> **Note on CUDA module version:** You may need to explicitly load CUDA prior
+> to running your Python script in order to fully utilize Longleaf's GPUs.
+> Please specify a version of CUDA that is compatible with the version of
+> PyTorch installed in your conda environment. To check the versions of CUDA
+> available on Longleaf, run `module avail cuda` from within an interactive
+> command-line session. For more information on Longleaf modules, please
+> see the following page: https://help.rc.unc.edu/modules/.
+
 > **Important:** Do not commit `config.sh` to version control, as it contains
 > your Hugging Face access token. It is listed in `.gitignore` for this reason.
 
