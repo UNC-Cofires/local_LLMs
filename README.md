@@ -86,6 +86,7 @@ Open `config.sh` and fill in the following variables:
 | `LLM_CONDA_ENV_PATH` | Full path where the conda environment will be created |
 | `LLM_CONDA_ENV_NAME` | Name of the conda environment |
 | `PYTORCH_DOWNLOAD_URL` | PyTorch download URL matching the CUDA version on Longleaf's GPU nodes (see note below) |
+| `CUDA_MODULE_VERSION` | Version of Longleaf's CUDA module to load when running Python scripts (see note below) |
 | `HF_HOME` | Directory for Hugging Face cache files -- use a `/proj` directory to avoid exceeding your home directory quota |
 | `HUGGING_FACE_HUB_TOKEN` | Your Hugging Face read-only access token |
 

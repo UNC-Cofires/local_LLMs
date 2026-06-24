@@ -14,6 +14,12 @@ LLM_CONDA_ENV_NAME="llm-env-v1"
 # please see the following page: https://pytorch.org/
 PYTORCH_DOWNLOAD_URL="https://download.pytorch.org/whl/cu130"
 
+# Specific CUDA module version to use.
+# To view the available versions installed on Longleaf,
+# run "module avail cuda" from within a command-line session.
+# For more info, please see: https://help.rc.unc.edu/modules/
+CUDA_MODULE_VERSION="cuda/13.0"
+
 # Base directory for Hugging Face cache files.
 # I recommend making this a /proj folder to avoid exceeding home directory quota limit.
 # For convenience, I also recommend adding this environment variable to your .bashrc.

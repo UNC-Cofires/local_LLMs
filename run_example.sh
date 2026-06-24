@@ -26,6 +26,9 @@ export HF_HOME=$HF_HOME
 export HUGGING_FACE_HUB_TOKEN=$HUGGING_FACE_HUB_TOKEN
 export PYTHONWARNINGS="ignore"
 
+# Load cuda module
+module load $CUDA_MODULE_VERSION
+
 # Run example python script that uses a local LLM to analyze news article text
 python3.12 run_example.py
 
