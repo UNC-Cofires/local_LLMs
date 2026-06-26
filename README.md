@@ -2,8 +2,9 @@
 
 This repository provides scripts for downloading and running large language
 models (LLMs) locally on UNC's [Longleaf HPC cluster](https://help.rc.unc.edu/longleaf-cluster/).
-It includes a working example that uses a local LLM to classify news articles
-as describing a flood or hurricane disaster event.
+It includes a basic example that uses a local LLM to classify a news article
+as describing a flood or hurricane disaster event, and a high-throughput example
+that uses local LLMs to process a large number of unformatted address strings. 
 
 ---
 
@@ -17,9 +18,8 @@ Running LLMs locally on Longleaf is useful when:
 - You want full control over the model and inference settings
 
 This repository uses the [Hugging Face Transformers](https://huggingface.co/docs/transformers)
-library to load and run models, and [BitsAndBytes](https://github.com/bitsandbytes-foundation/bitsandbytes)
-for 4-bit quantization, which reduces the GPU memory required to run large
-models.
+and [vLLM](https://vllm.ai/) libraries to load and run models, and [BitsAndBytes](https://github.com/bitsandbytes-foundation/bitsandbytes)
+for quantization, which reduces the GPU memory required to run large models.
 
 ---
 
@@ -64,6 +64,11 @@ the license for each model you intend to use:
 | `run_example.py` | Python script that classifies a news article using a local LLM. |
 | `example_text.md` | Example news article used as input for the classification task. |
 | `example-slurm.out` | Example output from a successful run of `run_example.sh`. |
+| `address_parsing_example.sh`  | SLURM job script that runs the high-throughput address parsing example. |
+| `address_parsing_example.py` | Python script that extracts structured data on address components from raw address strings. |
+| `address_parsing_prompts.py` | User-defined module for building LLM prompts used within `address_parsing_example.py` |
+| `address_parsing_input_data.csv` | Dataset of 10,000 raw address strings used as input for the address parsing example. |
+| `address_parsing_output_data.csv` | Example output from a successful run of `address_parsing_example.sh` |
 
 ---
 
@@ -128,6 +133,8 @@ The models to download are listed in `model_list.txt`, one model ID per line:
 meta-llama/Meta-Llama-3.1-8B-Instruct
 google/gemma-4-12B-it
 Qwen/Qwen3.5-9B
+cyankiwi/gemma-4-12B-it-AWQ-INT4
+cyankiwi/Qwen3.5-9B-AWQ-4bit
 ```
 
 Edit this file to add or remove models as needed, then submit the download job:
@@ -137,12 +144,12 @@ sbatch < download_models.sh
 ```
 
 This job downloads model weights to `$HF_HOME/hub/`. Model sizes vary -- allow
-sufficient storage space (roughly 15-20 GB per model at full precision). A GPU
+sufficient storage space (roughly 15-20 GB per model at full precision, less for pre-quantized versions). A GPU
 node is not required for this step.
 
 ---
 
-## Running the Example
+## Running the Basic Example
 
 The example script (`run_example.py`) uses `meta-llama/Meta-Llama-3.1-8B-Instruct`
 to classify the article in `example_text.md` as describing a flood or hurricane
@@ -179,16 +186,27 @@ Due to the high demand for GPU sessions on Longleaf, please familiarize yourself
 
 ---
 
+## Running the High-Throughput Example
+
+While the [transformers](https://github.com/huggingface/transformers) library used within the basic news article classification example is suitable for small-scale tasks, it is inefficient for high-throughput tasks that involve processing large volumes of requests. The [vLLM](https://github.com/vllm-project/vllm) library addresses these limitations through two key optimizations. First, it manages GPU memory more efficiently by storing intermediate computation states in non-contiguous blocks, allowing more sequences to be processed simultaneously. Second, it implements continuous batching, which dynamically adds new requests to the processing queue as soon as slots free up rather than waiting for an entire batch to complete. Together, these allow vLLM to keep GPU utilization consistently high, yielding substantially better processing speeds when the number of requests is high. 
+
+The example script (`address_parsing_example.py`) uses a few-shot prompting strategy to extract structured data on address components from a dataset of 10,000 raw address strings in a computationally-efficient manner using vLLM. The specific LLM used for inference is passed as a command-line argument to the script, which can be helpful for comparing the outputs of different models. The default LLM used in this example is `cyankiwi/gemma-4-12B-it-AWQ-INT4` (a pre-quantized version of `google/gemma-4-12B-it`).
+
+Submit the job to the [l40-gpu](https://help.rc.unc.edu/gpu/) partition with:
+
+```bash
+sbatch < address_parsing_example.sh
+```
+
+A typical run will take around 30 minutes to complete. The majority of this time is spent on vLLM's initialization phase -- which includes loading model weights and performing memory profiling to optimize GPU allocation -- rather than on inference itself. Once this startup overhead is complete, vLLM processes the actual requests quickly.
+
+The expected output of a successful run is a CSV file of JSON-formatted address components named `address_parsing_output_data.csv`.
+
+---
+
 ## Adapting This Example to Your Own Use Case
 
-To use a different model, update the `model_id` variable at the top of
-`run_example.py` to any model ID listed in `model_list.txt`.
-
-To classify a different article, replace `example_text.md` with your own
-text file and update the `input_text_path` variable in `run_example.py`.
-
-To adapt the classification task itself, modify the `messages` list in
-`run_example.py` to change the system prompt or user prompt.
+These examples can likely be adapted to other tasks (e.g., analyzing company SEC filings for flood risk disclosures) by modifying the prompts, models, and input data used by the scripts. 
 
 ---
 
